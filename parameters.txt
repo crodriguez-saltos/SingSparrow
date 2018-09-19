@@ -1,0 +1,42 @@
+[Identifiers]
+bird = BF1552
+booth = B
+dayTrial = 1
+probe = 0
+
+[Key A]
+folder = gy6or6_BF
+sound_type = con
+gap = 3
+
+[Key B]
+folder = ejn_5600_ZF
+sound_type = het
+gap = 3
+
+[Day schedule]
+Hour start = 9
+Hour end = 19
+Sound change = 15
+Begin file = 1
+
+[Reinforcement schedule]
+simple = 0
+MaxPresentations = 60
+Switch1 = 12
+Switch2 = 24
+Prob1 = 0.75
+Prob2 = 0.67
+Prob3 = 0.5
+
+[DAQ]
+device = Dev1
+LineA = Port1/Line1
+LineB = Port1/Line3
+
+[Sound recorder]
+recording = 0
+rate = 44100
+bit = 24
+Buffer = 100
+After trigger buffer = 120

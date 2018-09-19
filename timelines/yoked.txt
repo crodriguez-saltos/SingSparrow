@@ -1,0 +1,7 @@
+Booth,Model file,Date
+A,OutputFile.2016May01.mockStr.txt,20171219
+B,OutputFile.2016Mar04_A_Id-ZF1535_File1-alien_File2-foster_1.txt,20171219
+C,OutputFile.2016Apr30_A_Id-ZF1541_File1-alien_File2-foster_1.txt,20171219
+D,OutputFile.2016May01.mockStr.txt,20171219
+E,OutputFile.2016May01.mockStr.txt,20171219
+F,OutputFile.2016Apr30_A_Id-ZF1541_File1-alien_File2-foster_1.txt,20171219

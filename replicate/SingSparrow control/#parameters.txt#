@@ -1,0 +1,23 @@
+[Identifier 1]
+bird = zf1581
+booth = F
+pbtype = reverse
+
+[Foster]
+folder = brown_cerulean
+
+[Alien]
+folder = black_cerulean
+
+[Schedule]
+playbird = ZF1543
+daystart = 11/09/2017
+timezone = America/New_York
+dayTrial = 1
+Hour start = 8
+Hour end = 19
+Sound change = 15
+Begin file = 1
+
+[Arduino]
+port= com8
