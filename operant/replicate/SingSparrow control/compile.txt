@@ -1,0 +1,3 @@
+To compile SingSparrow.m, write the following line in the command prompt:
+
+mcc -mv 'SingSparrow.m'
