@@ -13,9 +13,8 @@ import math
 # The program balances exposure to both sounds played by the keys while
 # still allowing to detect a preference for a particular key.
 
+# Original program writen by Carlos Antonio Rodriguez-Saltos for MATLAB, 2014.
 # Translated from Matlab to Python by Prasanna Karur, 2017-2018.
-# Carlos Antonio Rodriguez-Saltos provided useful suggestions on how to
-# program the schedule.
 # This version of the program is made to run with a Raspberry Pi board as
 # a data acquisition device.
 
