@@ -1,0 +1,35 @@
+---
+title: "Generate playlist"
+author: "Carlos Antonio Rodríguez-Saltos"
+date: "January 15, 2019"
+output: pdf_document
+---
+
+SingSparrow, in mode operant-yoked, needs to generate a playlist based on playbacks elicited by a different bird. This file documents the code used to generate that playlist.
+
+## Import playbacks elicited by a different bird
+Logs of keypresses for a different bird were read and playbacks were extracted using command line tools for reading text.
+
+The program can determine the identity of the song from the filename and it appends that info to info on keypresses. I tested that this is true using a single file.
+
+```{bash}
+logdir="./testbird"
+
+printf "The file for testing the command"
+dir $logdir
+
+./genPbList.sh testbird output.txt
+
+cat output.txt | head -n 10
+cat output.txt | tail -n 10
+
+```
+
+The code was then run on multiple files.
+
+```{bash}
+./genPbList.sh ZF1536 output.txt
+
+cat output.txt | head -n 5
+cat output.txt | tail -n 5
+```
