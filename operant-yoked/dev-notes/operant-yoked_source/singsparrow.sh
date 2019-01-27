@@ -1,23 +1,81 @@
 #!/usr/bin/env bash
 
-# Load variables
-while getopts s:e:r option
-do
-    case "${option}"
-    in
-	s) whs=${OPTARG};;
-	e) whe=${OPTARG};;
-	r) reset=1;;
-    esac
-done
+# Load parameter values specified by user
+# All values are stored in a configuration file, the name of which is specified here.
+parameters="./parameters.txt"
+
+# The values are imported by first searching the paramter name in the configuration file, and then by extracting the value to the right of the parameter name. The following function does that job.
+val_importer () {
+    # Select line containing value
+    val=$(cat $parameters | grep "$1")
+
+    # Remove carriage return
+    val=$(echo $val | sed "s/\r//")
+
+    # Extract value
+    val=$(echo $val | sed "s/$1\(.*\)/\1/")
+
+    echo $val
+}
+
+whs=$(val_importer "Hour start = ")
+whe=$(val_importer "Hour end = ")
+reset=$(val_importer "reset = ")
+
+songA=$(val_importer "songA = ")
+songB=$(val_importer "songB = ")
+gapA=$(val_importer "gapA = ")
+gapB=$(val_importer "gapB = ")
+
+bird=$(val_importer "bird = ")
+room=$(val_importer "booth = ")
+model=$(val_importer "model = ")
+yoktype=$(val_importer "yoke type =  ")
+yokmatch=$(val_importer "yoke match = ")
+
+# Create single-channel versions of the recordings.
+# The way that SingSparrow cannalizes each song to each speaker is by creating left-only and right-only stereo versions of the sound files.
+songAL=$(echo $songA | sed "s/\.wav/-L\.wav/")
+songAR=$(echo $songA | sed "s/\.wav/-R\.wav/")
+songBL=$(echo $songB | sed "s/\.wav/-L\.wav/")
+songBR=$(echo $songB | sed "s/\.wav/-R\.wav/")
+
+sox $songA $songAL remix 1 0
+sox $songA $songAR remix 0 1
+sox $songB $songBL remix 1 0
+sox $songB $songBR remix 0 1
 
 # Welcome message
 printf "Welcome to SingSparrow, working in operant-yoked mode\n"
 printf "This program was written by Carlos Antonio Rodriguez-Saltos, 2018\n\n"
 
-# Reset schedule, if specified by the user
+echo "Start hour is $(echo $whs | cat -v)"
+echo "End hour is $(echo $whe | cat -v)"
+echo "Reset status is $(echo $reset | cat -v)"
+
+echo "Song A is $(echo $songA | cat -v)"
+echo "Song B is $(echo $songB | cat -v)"
+
+# Define output file
+output="OutputFile.$(date +%Y)$(date +%b)$(date +%d)"
+output="$output"_"$room"
+output="$output"_"Id-$bird"
+output="$output"_"Model-$yokmatch"
+output="$output"_"$yoktype"
+output="$output"_"File1-$songA"
+output="$output"_"File2-$songB"
+output="$output"_"1.txt"
+
+echo "Output file is $output"
+
+# Reset schedule, as per user request
+date="$(date +%Y),$(date +%m),$(date +%d),$(date +%H),$(date +%M),$(date +%S)"
+
 if [ "$reset" == "1" ]; then
     echo "1" > schpos
+    printf "0,0,1,$date\n" > $output
+else
+    printf "0,0,1,$date\n" >> $output
 fi
 
 # Configuration
@@ -74,18 +132,22 @@ mkfifo pressbuff2
 
 # The modules will be started. Each schedule and press module will be opened for each channel.
 printf "Opening schedule modules for each channel\n"
-gnome-terminal -e "./operant-yoked.sh -t 3 -s schedule -c 1" &&
+echo $songAL
+echo $songBL
+gnome-terminal -e "./operant-yoked.sh -t $gapA -s schedule -c 1 -a $songAL -b $songBL -o $output" &&
 scheduleId1=$(echo $!)
 
-gnome-terminal -e "./operant-yoked.sh -t 3 -s schedule -c 2" &&
+echo $songAR
+echo $songBR
+gnome-terminal -e "./operant-yoked.sh -t $gapB -s schedule -c 2 -a $songAR -b $songBR -o $output" &&
 scheduleId2=$(echo $!)
 
 # Load press modules
 printf "Opening press modules for each channel\n"
-gnome-terminal -e "$press_module pressbuff1 1 0.25" &
+gnome-terminal -e "$press_module pressbuff1 1 0.5" &
 pressId1=$(echo $!)
 
-gnome-terminal -e "$press_module pressbuff2 2 0.25" &
+gnome-terminal -e "$press_module pressbuff2 2 0.5" &
 pressId2=$(echo $!)
 
 #wait $scheduleId

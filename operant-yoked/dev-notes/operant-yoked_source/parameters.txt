@@ -1,0 +1,45 @@
+[Identifiers]
+bird = BF1552
+booth = B
+dayTrial = 1
+probe = 0
+yoke match = test
+yoke type = forward
+
+[Key A]
+songA = blue-JL-040_oc.wav
+sound_typeA = father
+gapA = 3
+
+[Key B]
+songB = golden_JL_070_oc.wav
+sound_typeB = neighbor
+gapB = 3
+
+[Day schedule]
+Hour start = 09
+Hour end = 19
+Sound change = 15
+Begin file = 1
+reset = 1
+
+[Reinforcement schedule]
+simple = 0
+MaxPresentations = 60
+Switch1 = 12
+Switch2 = 24
+Prob1 = 0.75
+Prob2 = 0.67
+Prob3 = 0.5
+
+[DAQ]
+device = Dev1
+LineA = Port1/Line1
+LineB = Port1/Line3
+
+[Sound recorder]
+recording = 0
+rate = 44100
+bit = 24
+Buffer = 100
+After trigger buffer = 120

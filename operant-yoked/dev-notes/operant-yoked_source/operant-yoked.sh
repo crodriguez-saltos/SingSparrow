@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
 
 # Load variables
-while getopts "t:s:c:r" option
+while getopts "t:s:c:a:b:o:" option
 do
     case "${option}"
     in
 	t) gapthreshold=${OPTARG};;
 	s) schedule=${OPTARG};;
 	c) channel=${OPTARG};;
+	a) songA=${OPTARG};;
+	b) songB=${OPTARG};;
+	o) output=${OPTARG};;
     esac
 done
 
@@ -17,15 +20,19 @@ printf "Running in operant-yoked mode.\n"
 printf "Module written by Carlos Antonio Rodríguez-Saltos, 2019.\n"
 printf "Channel $channel.\n"
 
+printf "Song A is $songA.\n"
+printf "Song B is $songB.\n"
+
 printf "To exit type Ctrl+C.\n"
 
 # Set up starting variables
 # The following variables are counters necessary to keep track of several quantities
-prevbuff=$(cat pressbuff$channel)
+prev_state=$(cat pressbuff$channel)
 gaprun=0
-schpos=0
 gap=0
-play=1
+onset=0
+
+npb=$(cat schedule | wc -l)
 
 # Start of loop
 # The code below runs on a continuos loop, interrupted only once program is not within working hours any longer.
@@ -39,10 +46,8 @@ while :; do
 
 if [ "$gaprun" == "1" ]; then
     if [ "$(echo "$gap < $gapthreshold" | bc -l)" == "1" ]; then
-	play=0
 	gap=$(echo $(date +%s) - $gapstart | bc)
     else
-	play=1
 	gaprun=0
 	gap=0
     fi
@@ -52,36 +57,54 @@ fi
 # The program searchers for presses in a buffer on which the press module stores key captures.
 current_state=$(cat pressbuff"$channel")
 
-if [ "$current_state" == "1" ]; then
-    prev_state=$(echo $prevbuff)
-    if [ "$prev_state" == "0" ]; then
-	onset=1
-	printf "Key "$channel" was pressed"
-	if [ "$play" == "0" ]; then
-	    printf "; song is still being played; no song will be played.\n"
-	fi
-	printf "\n"
+# Record press and decide whether song should be played.
+if [ "$current_state" == "1" ] && [ "$prev_state" == "0" ]; then
+    printf "Key "$channel" was pressed"
+    pos=$(cat schpos)
+    onset=1
+    if [ "$pos" -gt "$npb" ]; then
+	printf "; no more song playbacks allowed.\n"
+	play=0
+    elif [ "$gaprun" == "1" ]; then
+	printf "; song is still being played; no song will be played.\n"
+	play=0
     else
-	onset=0
+	play=1
     fi
+    printf "\n"
+else
+    play=0
 fi
 
-# Behavior if keys were pressed
-# This part of the loop describes how the program responds if a key has been pressed.
+prev_state=$current_state
 
-if [ "$onset" == "1" ] && [ "$gaprun" == "0" ]; then
-    # Select sound to play
-    if [ "$play" == "1" ]; then
-	pos=$(cat schpos)
-	sound=$(sed -n "$pos"p $schedule)
-	printf "Playing song "$sound"\n"
+# Play sound, if requirements are met
+if [ "$play" == "1" ]; then
+    sound=$(sed -n "$pos"p $schedule)
 
-	# Activate gap
-	gaprun=1
-	gapstart=$(date +%s)
+    if [ "$sound" == "1" ]; then
+	printf "Playing song "$songA"\n"
+	aplay $songA &
+    elif [ "$sound" == "2" ]; then
+	printf "Playing song "$songB"\n"
+	aplay $songB &
+    fi
+
+    # Activate gap
+    gaprun=1
+    gapstart=$(date +%s)
     
-	# Move position in the schedule
-	echo $(($pos + 1)) > schpos
+    # Move position in the schedule
+    echo $(($pos + 1)) > schpos
+fi
+
+# Record info to output file
+if [ "$onset" == "1" ]; then
+    date="$(date +%Y),$(date +%m),$(date +%d),$(date +%H),$(date +%M),$(date +%S)"
+    if [ "$play" == "1" ]; then
+	printf "$channel,$sound,1,$date\n" >> $output
+    else
+	printf "$channel,0,1,$date\n" >> $output
     fi
 fi
 
