@@ -8,17 +8,17 @@ yoke type = forward
 
 [Key A]
 songA = blue-JL-040_oc.wav
-sound_typeA = father
+sound_typeA = foster
 gapA = 3
 
 [Key B]
 songB = golden_JL_070_oc.wav
-sound_typeB = neighbor
+sound_typeB = alien
 gapB = 3
 
 [Day schedule]
 Hour start = 09
-Hour end = 19
+Hour end = 23
 Sound change = 15
 Begin file = 1
 reset = 1

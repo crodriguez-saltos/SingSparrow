@@ -1,0 +1,2 @@
+28 11 * * * ~/SingSparrow/operant-yoked/dev-notes/operant-yoked_source/singsparrow-operant-yoked.sh
+30 11 * * * ~/SingSparrow/operant-yoked/dev-notes/operant-yoked_source/shutsparrow.sh

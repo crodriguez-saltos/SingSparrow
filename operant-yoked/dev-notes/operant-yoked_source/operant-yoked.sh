@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Load variables
-while getopts "t:s:c:a:b:o:" option
+while getopts "t:s:c:a:x:b:y:o:" option
 do
     case "${option}"
     in
@@ -9,7 +9,9 @@ do
 	s) schedule=${OPTARG};;
 	c) channel=${OPTARG};;
 	a) songA=${OPTARG};;
+	x) songAtype=${OPTARG};;
 	b) songB=${OPTARG};;
+	y) songBtype=${OPTARG};;
 	o) output=${OPTARG};;
     esac
 done
@@ -45,8 +47,8 @@ while :; do
 # If the bird pressed a key, the program will not play a sound only after a certain period of time (gap) has passed since the last time that a sound was played. In the following chunk of code, the program will update the counter. If the gap has reached the threshold specified by the user, then it will allow playback, provided that other requirements (checked in following chunks) are met.
 
 if [ "$gaprun" == "1" ]; then
-    if [ "$(echo "$gap < $gapthreshold" | bc -l)" == "1" ]; then
-	gap=$(echo $(date +%s) - $gapstart | bc)
+    if [ "$(python ./gapcomp.py $gap $gapthreshold)" == "1" ]; then
+	gap=$(python ./gapsum.py $(date +%s) $gapstart)
     else
 	gaprun=0
 	gap=0
@@ -83,10 +85,10 @@ if [ "$play" == "1" ]; then
     sound=$(sed -n "$pos"p $schedule)
 
     if [ "$sound" == "1" ]; then
-	printf "Playing song "$songA"\n"
+	printf "Playing song "$songAtype"\n"
 	aplay $songA &
     elif [ "$sound" == "2" ]; then
-	printf "Playing song "$songB"\n"
+	printf "Playing song "$songBtype"\n"
 	aplay $songB &
     fi
 

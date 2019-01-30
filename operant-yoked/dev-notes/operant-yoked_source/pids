@@ -1,0 +1,10 @@
+
+
+17987
+17989
+./operant-yoked.sh -t 3 -s schedulenum -c 2 -a blue-JL-040_oc-R.wav -x foster -b golden_JL_070_oc-R.wav -y alien -o OutputFile.2019Jan30_B_Id-BF1552_Model-test_forward_File1-blue-JL-040_oc.wav_Type1-foster_File2-golden_JL_070_oc.wav_Type2-alien_1.txt
+pressbuff1 1 0.2
+pressbuff2 2 0.2
+./operant-yoked.sh -t 3 -s schedulenum -c 2 -a blue-JL-040_oc-R.wav -x foster -b golden_JL_070_oc-R.wav -y alien -o OutputFile.2019Jan30_B_Id-BF1552_Model-test_forward_File1-blue-JL-040_oc.wav_Type1-foster_File2-golden_JL_070_oc.wav_Type2-alien_1.txt
+./gpio_press.sh pressbuff1 1 0.2
+./gpio_press.sh pressbuff2 2 0.2

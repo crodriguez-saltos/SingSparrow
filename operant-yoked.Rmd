@@ -1,0 +1,14 @@
+---
+title: "Operant Yoked"
+author: "Carlos Antonio Rodríguez-Saltos"
+date: "January 18, 2019"
+output: pdf_document
+---
+
+The development of the operant-yoked mode is documented here.
+
+## Start of the loop
+
+The algorithm for this portion of the script is shown in Figure \ref{loop-start}.
+
+![Steps at the start of the loop\label{loop-start}](./loop-start.jpg){width=50%}

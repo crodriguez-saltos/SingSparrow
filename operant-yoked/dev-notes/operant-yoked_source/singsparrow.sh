@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+# Load arguments
+while getopts "s:k:" option
+do
+	case "${option}"
+	in
+		s) system=${OPTARG};;
+		k) keys=${OPTARG};;
+	esac
+done
+
 # Load parameter values specified by user
 # All values are stored in a configuration file, the name of which is specified here.
 parameters="./parameters.txt"
@@ -27,10 +37,13 @@ songB=$(val_importer "songB = ")
 gapA=$(val_importer "gapA = ")
 gapB=$(val_importer "gapB = ")
 
+songAtype=$(val_importer "sound_typeA = ")
+songBtype=$(val_importer "sound_typeB = ")
+
 bird=$(val_importer "bird = ")
 room=$(val_importer "booth = ")
 model=$(val_importer "model = ")
-yoktype=$(val_importer "yoke type =  ")
+yoktype=$(val_importer "yoke type = ")
 yokmatch=$(val_importer "yoke match = ")
 
 # Create single-channel versions of the recordings.
@@ -63,7 +76,9 @@ output="$output"_"Id-$bird"
 output="$output"_"Model-$yokmatch"
 output="$output"_"$yoktype"
 output="$output"_"File1-$songA"
+output="$output"_"Type1-$songAtype"
 output="$output"_"File2-$songB"
+output="$output"_"Type2-$songBtype"
 output="$output"_"1.txt"
 
 echo "Output file is $output"
@@ -82,7 +97,11 @@ fi
 # In this chunk, basic configuration options are set, including the location of the file containing parameters specified by the user and of the buffer storing key press values.
 #parameters=
 
-press_module=../press-response_source/press-capture.sh
+if [ "$keys" == "keyboard" ]; then
+	press_module="../press-response_source/press-capture.sh"
+elif [ "$keys" == "gpio" ]; then
+	press_module="./gpio_press.sh"
+fi
 
 # Time checks
 ## Check that the hour format is correct
@@ -130,28 +149,49 @@ printf "Starting position in schedule is $(cat schpos)\n"
 mkfifo pressbuff1
 mkfifo pressbuff2
 
+# Generate schedule
+cp schedule schedulenum
+sed -i "s/$songAtype/1/g" schedulenum
+sed -i "s/$songBtype/2/g" schedulenum
+
 # The modules will be started. Each schedule and press module will be opened for each channel.
 printf "Opening schedule modules for each channel\n"
 echo $songAL
 echo $songBL
-gnome-terminal -e "./operant-yoked.sh -t $gapA -s schedule -c 1 -a $songAL -b $songBL -o $output" &&
-scheduleId1=$(echo $!)
+schcmd1="./operant-yoked.sh -t $gapA -s schedulenum -c 1 -a $songAL -x $songAtype -b $songBL -y $songBtype -o $output"
+schcmd2="./operant-yoked.sh -t $gapB -s schedulenum -c 2 -a $songAR -x $songAtype -b $songBR -y $songBtype -o $output"
 
-echo $songAR
-echo $songBR
-gnome-terminal -e "./operant-yoked.sh -t $gapB -s schedule -c 2 -a $songAR -b $songBR -o $output" &&
-scheduleId2=$(echo $!)
+if [ "$system" == "rpi" ]; then
+	lxterminal --command="/bin/bash -c '$schcmd1'" &&
+	scheduleId1=$(echo $!)
+	lxterminal --command="/bin/bash -c '$schcmd2'" &&
+	scheduleId2=$(echo $!)
+else
+	gnome-terminal -e "$schcmd1" &&
+	scheduleId1=$(echo $!)
+	gnome-terminal -e "$schcmd2" &&
+	scheduleId2=$(echo $!)
+fi
 
 # Load press modules
 printf "Opening press modules for each channel\n"
-gnome-terminal -e "$press_module pressbuff1 1 0.5" &
-pressId1=$(echo $!)
+presscmd1="$press_module pressbuff1 1 0.2"
+presscmd2="$press_module pressbuff2 2 0.2"
 
-gnome-terminal -e "$press_module pressbuff2 2 0.5" &
-pressId2=$(echo $!)
+if [ "$keys" == "gpio" ]; then
+	lxterminal --command="/bin/bash -c '$presscmd1'" &
+	pressId1=$(echo $!)
+	lxterminal --command="/bin/bash -c '$presscmd2'" &
+	pressId2=$(echo $!)
+else
+	gnome-terminal -e "$presscmd1" &
+	pressId1=$(echo $!)
+	gnome-terminal -e "$presscmd2" &
+	pressId2=$(echo $!)
+fi
 
-#wait $scheduleId
-
-#printf "It worked!!"
-
-#sleep 5
+# Save processes' names to a text file
+echo $schcmd1 > processes
+echo $schcmd2 >> processes
+echo $presscmd1 >> processes
+echo $presscmd2 >> processes

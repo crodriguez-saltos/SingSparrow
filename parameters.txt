@@ -3,24 +3,29 @@ bird = BF1552
 booth = B
 dayTrial = 1
 probe = 0
+yoke match = ZF1536
+yoke type = reverse
+date start = 2019-01-25
 
 [Key A]
-folder = gy6or6_BF
-sound_type = con
-gap = 3
+songA = blue-JL-040_oc.wav
+sound_typeA = alien
+gapA = 3
 
 [Key B]
-folder = ejn_5600_ZF
-sound_type = het
-gap = 3
+songB = golden_JL_070_oc.wav
+sound_typeB = foster
+gapB = 3
 
 [Day schedule]
-Hour start = 9
-Hour end = 19
+Hour start = 09
+Hour end = 23
 Sound change = 15
 Begin file = 1
+reset = 1
 
 [Reinforcement schedule]
+operant yoked = 1
 simple = 0
 MaxPresentations = 60
 Switch1 = 12
@@ -40,3 +45,6 @@ rate = 44100
 bit = 24
 Buffer = 100
 After trigger buffer = 120
+
+[Software configuration]
+working directory = /home/pi/SingSparrow
