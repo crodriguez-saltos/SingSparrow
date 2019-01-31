@@ -36,7 +36,7 @@ temp5=$(mktemp)
 awk -F',' '($4 > 0)' < $temp4  > $temp5
 
 # Generate folder to contain output
-outdir="$dirout/$(basename $dirlog)_modelPb"
+outdir="$dirout/$(basename $dirlog)_modelpb"
 if [ ! -d $outdir ]; then
 	mkdir $outdir
 fi
