@@ -5,7 +5,7 @@ dayTrial = 1
 probe = 0
 yoke match = ZF1536
 yoke type = reverse
-date start = 2019-01-25
+date start = 2019-01-30
 
 [Key A]
 songA = blue-JL-040_oc.wav
@@ -18,8 +18,8 @@ sound_typeB = foster
 gapB = 3
 
 [Day schedule]
-Hour start = 09
-Hour end = 23
+Hour start = 08
+Hour end = 19
 Sound change = 15
 Begin file = 1
 reset = 1
