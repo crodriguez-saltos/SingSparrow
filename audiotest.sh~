@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# This program contains useful functions to test audio for SingSparrow.
+
+# Import variables
+while getopts "t:" option
+do
+    case "${option}"
+    in
+	t) test=${OPTARG};;
+    esac
+done
+
+# Bird test
+# In this test, a song is played on continuous loop. This playback routine is normally used to calibrate speakers to have a desired volume output.
+
+if [ "$test" == "bird" ]; then
+    echo "Bird test selected."
+    echo "A sound will be played continuously for 5 minutes, or until the user forcefully terminates the program."
+    echo "To break the loop, type Ctrl+C"
+
+    now=$(date +%s)
+    while :; do
+	elapsed=$((($(date +%s) - $now) / 60))
+	if [ "$elapsed" == "5" ]; then
+	    break
+	fi
+	aplay ./audio/red-jl-092_oc.wav    
+    done
+fi
