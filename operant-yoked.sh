@@ -40,7 +40,7 @@ gaprun=0
 gap=0
 onset=0
 
-npb=$(cat schedule | wc -l)
+npb=$(cat $schedule | wc -l)
 
 # Start of loop
 # The code below runs on a continuos loop, interrupted only once program is not within working hours any longer.
