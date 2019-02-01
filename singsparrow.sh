@@ -112,7 +112,7 @@ fi
 #parameters=
 
 if [ "$keys" == "keyboard" ]; then
-	press_module="../press-response_source/press-capture.sh"
+	press_module="./press-capture.sh"
 elif [ "$keys" == "gpio" ]; then
 	press_module="./gpio_press.sh"
 fi
