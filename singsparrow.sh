@@ -84,7 +84,18 @@ echo "Song B is $(echo $songB | cat -v)"
 echo "Working directory is $(pwd)"
 
 # Define output file
-output="OutputFile.$(date +%Y)$(date +%b)$(date +%d)"
+if [ "$system" == "rpi" ]; then
+    datadir="/home/pi/SingSparrow_data"
+else
+    datadir="../singsparrow_data"
+fi
+
+if [ ! -d $datadir/output/$bird ]; then
+    mkdir $datadir/output/$bird
+fi
+
+output="$datadir/output/$bird"
+output="$output/OutputFile.$(date +%Y)$(date +%b)$(date +%d)"
 output="$output"_"$room"
 output="$output"_"Id-$bird"
 output="$output"_"Model-$yokmatch"
@@ -102,9 +113,9 @@ date="$(date +%Y),$(date +%m),$(date +%d),$(date +%H),$(date +%M),$(date +%S)"
 
 if [ "$reset" == "1" ]; then
     echo "1" > schpos
-    printf "0,0,1,$date\n" > ./output/$output
+    printf "0,0,1,$date\n" > $output
 else
-    printf "0,0,1,$date\n" >> ./output/$output
+    printf "0,0,1,$date\n" >> $output
 fi
 
 # Configuration
@@ -190,8 +201,8 @@ echo $songAL
 echo $songBL
 
 if [ "$opyok" == "1" ]; then
-	schcmd1="./operant-yoked.sh -t $gapA -s schedulenum -c 1 -a ./audio/$songAL -x $songAtype -b ./audio/$songBL -y $songBtype -w $wd -o ./output/$output"
-	schcmd2="./operant-yoked.sh -t $gapB -s schedulenum -c 2 -a ./audio/$songAR -x $songAtype -b ./audio/$songBR -y $songBtype -w $wd -o ./output/$output"
+	schcmd1="./operant-yoked.sh -t $gapA -s schedulenum -c 1 -a ./audio/$songAL -x $songAtype -b ./audio/$songBL -y $songBtype -w $wd -o $output"
+	schcmd2="./operant-yoked.sh -t $gapB -s schedulenum -c 2 -a ./audio/$songAR -x $songAtype -b ./audio/$songBR -y $songBtype -w $wd -o $output"
 fi
 
 if [ "$system" == "rpi" ]; then

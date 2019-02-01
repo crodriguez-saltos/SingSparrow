@@ -1,4 +1,4 @@
-./operant-yoked.sh -t 3 -s schedulenum -c 1 -a ./audio/blue-JL-040_oc-L.wav -x alien -b ./audio/golden_JL_070_oc-L.wav -y foster -w /home/pi/SingSparrow -o ./output/OutputFile.2019Feb01_B_Id-BF1552_Model-ZF1536_reverse_File1-blue-JL-040_oc.wav_Type1-alien_File2-golden_JL_070_oc.wav_Type2-foster_1.txt
-./operant-yoked.sh -t 3 -s schedulenum -c 2 -a ./audio/blue-JL-040_oc-R.wav -x alien -b ./audio/golden_JL_070_oc-R.wav -y foster -w /home/pi/SingSparrow -o ./output/OutputFile.2019Feb01_B_Id-BF1552_Model-ZF1536_reverse_File1-blue-JL-040_oc.wav_Type1-alien_File2-golden_JL_070_oc.wav_Type2-foster_1.txt
+./operant-yoked.sh -t 3 -s schedulenum -c 1 -a ./audio/blue-JL-040_oc-L.wav -x alien -b ./audio/golden_JL_070_oc-L.wav -y foster -w /home/pi/SingSparrow -o ../singsparrow_data/output/BF1552/OutputFile.2019Feb01_B_Id-BF1552_Model-ZF1536_reverse_File1-blue-JL-040_oc.wav_Type1-alien_File2-golden_JL_070_oc.wav_Type2-foster_1.txt
+./operant-yoked.sh -t 3 -s schedulenum -c 2 -a ./audio/blue-JL-040_oc-R.wav -x alien -b ./audio/golden_JL_070_oc-R.wav -y foster -w /home/pi/SingSparrow -o ../singsparrow_data/output/BF1552/OutputFile.2019Feb01_B_Id-BF1552_Model-ZF1536_reverse_File1-blue-JL-040_oc.wav_Type1-alien_File2-golden_JL_070_oc.wav_Type2-foster_1.txt
 ./press-capture.sh pressbuff1 1 0.2
 ./press-capture.sh pressbuff2 2 0.2
