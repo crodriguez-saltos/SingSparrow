@@ -63,14 +63,14 @@ printf "Please type the answers to the following questions.\n\n"
 # Name of the bird
 echo "What is the name of the bird?"
 read varname
-param="bird = "
+param="bird ="
 sed -i "s/$param.*/$param $varname/" $pfile
 
 # Booth
 echo "In which booth or room is the bird housed?"
 read varname
 booth=$varname
-param="booth = "
+param="booth ="
 sed -i "s/$param.*/$param $varname/" $pfile
 
 # Yoke match
@@ -80,7 +80,7 @@ echo "These are the models found in storage:"
 echo $matches
 read varname
 yokmodel=$varname
-param="yoke match = "
+param="yoke match ="
 sed -i "s/$param.*/$param $varname/" $pfile
 
 # Type of yoke match
@@ -91,13 +91,13 @@ select ty in "forward" "reverse"; do
         reverse ) yoktype="reverse"; break;;
     esac
 done
-param="yoke type = "
+param="yoke type ="
 sed -i "s/$param.*/$param $yoktype/" $pfile
 
 # Date start
 echo "When is the bird starting the experiment? (yyyy-mm-dd)"
 read varname
-param="yoke match = "
+param="date start ="
 sed -i "s/$param.*/$param $varname/" $pfile
 
 # Song info
@@ -106,7 +106,7 @@ echo "What is the filename of the song of the father? (the file should be stored
 echo "These are the songs found in storage:"
 echo $songs
 read varname
-param="songA = "
+param="songA ="
 sed -i "s/$param.*/$param $varname/" $pfile
 sed -i "s/sound_typeA = .*/sound_typeA = foster/" $pfile
 
@@ -114,7 +114,7 @@ echo "What is the filename of ths song of the neighbor? (the file should be stor
 echo "These are the songs found in storage:"
 echo $songs
 read varname
-param="songB = "
+param="songB ="
 sed -i "s/$param.*/$param $varname/" $pfile
 sed -i "s/sound_typeB = .*/sound_typeB = alien/" $pfile
 
