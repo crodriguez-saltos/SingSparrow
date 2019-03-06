@@ -1,28 +1,22 @@
 #!/usr/bin/env bash
 
-echo "This is the installation utility for SingSparrow Operant Yoked mode."
-echo "This installation is meant to be run only with Raspberry Pis, and it will dedicate all user-defined automated tasks only to SingSparrow."
-
-while true; do
-    read -p "Do you want to continue (y/n)" yn
-    case $yn in
-	[Yy]* ) break;;
-	[Nn]* ) exit;;
-	* ) echo "Please answer yes (y) or no (n).";;
-    esac
-done
+# Welcome message
+printf "\n*************"
+printf "\nThis is the installation utility for SingSparrow (Operant Yoked mode).\n\n"
+printf "Please answer the following questions.\n\n"
 
 # Apparently, the Raspberry Pi does not have system sounds, so no need to deactivate them.
 
 # Schedule Rpi to run on a daily basis
 while true; do
-    read -p "Do you want to automate the daily start and end of SingSparrow? (y/n)" yn
+    read -p "Do you want to automate the daily start and end of SingSparrow? (if not installing on Raspberry Pi, please answer no) (y/n)" yn
     case $yn in
 	[Yy]* ) echo "Updating crontab"; cronup=1; break;;
 	[Nn]* ) cronup=0; break;;
 	* ) echo "Please answer yes (y) or no (n).";;
     esac
 done
+printf "\n"
 
 if [ "$cronup" == "1" ]; then
     echo "00 08 * * * DISPLAY=:0 /home/pi/SingSparrow/singsparrow-operant-yoked.sh" > mycron
@@ -35,36 +29,33 @@ if [ "$cronup" == "1" ]; then
 fi
 
 # Create data folders, if needed
-outputdir="/home/pi/SingSparrow_data/output"
+outputdir="../SingSparrow_data/output"
 if [ ! -d $outputdir ]; then
     mkdir -p $outputdir
 fi
 
 # Copy parameters file
-cp ./parameters_opyok.txt /home/pi/SingSparrow_data/parameters_opyok.txt
+rsync ./parameters_opyok.txt ../SingSparrow_data/parameters_opyok.txt
 
 # Parameters.txt wizard
 while true; do
-    read -p "Do you want to run the set-up wizard? (y/n)" yn
+    read -p "Do you want to enter info about the bird? (y/n)" yn
     case $yn in
 	[Yy]* ) echo "Let's begin!"; break;;
 	[Nn]* ) echo "OK"; exit;;
 	* ) echo "Please answer yes (y) or no (n).";;
     esac
 done
+printf "\n"
 
-pfile="/home/pi/SingSparrow_data/parameters_opyok.txt"
-
-# Welcome message
-echo "***************"
-echo "Welcome to the wizard to set-up SingSparrow, in operant-yoked mode"
-printf "Please type the answers to the following questions.\n\n"
+pfile="../SingSparrow_data/parameters_opyok.txt"
 
 # Name of the bird
 echo "What is the name of the bird?"
-read varname
+read birdname
 param="bird ="
-sed -i "s/$param.*/$param $varname/" $pfile
+sed -i "s/$param.*/$param $birdname/" $pfile
+printf "\n"
 
 # Booth
 echo "In which booth or room is the bird housed?"
@@ -72,16 +63,32 @@ read varname
 booth=$varname
 param="booth ="
 sed -i "s/$param.*/$param $varname/" $pfile
+printf "\n"
 
 # Yoke match
 matches=$(ls ./models/*_modelpb/ -d | sed "s@./models/\(.*\)_modelpb/@\1@g")
-echo "To which bird is this bird matched to? (the corresponding playback lists should be stored in the ./models folder)"
-echo "These are the models found in storage:"
-echo $matches
-read varname
+echo "To which bird is this bird matched to? (showing models stored in the ./models folder)"
+
+i=0
+while read line; do
+    options[ $i ]="$line"
+    (( i++ ))
+done < <(ls ./models/*_modelpb/ -d | sed "s@./models/\(.*\)_modelpb/@\1@g")
+
+select opt in "${options[@]}"; do
+  case $opt in
+    *)
+      echo "Model $opt selected"
+      varname=$opt
+      break
+      ;;
+  esac
+done
+
 yokmodel=$varname
 param="yoke match ="
 sed -i "s/$param.*/$param $varname/" $pfile
+printf "\n"
 
 # Type of yoke match
 echo "What type of yoked control is this one?"
@@ -93,30 +100,69 @@ select ty in "forward" "reverse"; do
 done
 param="yoke type ="
 sed -i "s/$param.*/$param $yoktype/" $pfile
+printf "\n"
 
 # Date start
 echo "When is the bird starting the experiment? (yyyy-mm-dd)"
 read varname
 param="date start ="
 sed -i "s/$param.*/$param $varname/" $pfile
+printf "\n"
 
 # Song info
 songs=$(ls ./audio/*_oc.wav | sed "s@./audio/@@g")
-echo "What is the filename of the song of the father? (the file should be stored in the ./audio folder)"
-echo "These are the songs found in storage:"
-echo $songs
-read varname
+echo "Which one is the song of the father? (showing files stored in the ./audio folder)"
+#echo "These are the songs found in storage:"
+
+i=0
+while read line; do
+    options[ $i ]="$line"
+    (( i++ ))
+done < <(ls ./audio/*_oc.wav | sed "s@./audio/@@g")
+
+select opt in "${options[@]}"; do
+  case $opt in
+    *.wav)
+      echo "Wave file $opt selected"
+      varname=$opt
+      break
+      ;;
+    *)
+      echo "This is not a number"
+      ;;
+  esac
+done
+
 param="songA ="
 sed -i "s/$param.*/$param $varname/" $pfile
 sed -i "s/sound_typeA = .*/sound_typeA = foster/" $pfile
+printf "\n"
 
-echo "What is the filename of ths song of the neighbor? (the file should be stored in the ./audio folder)"
-echo "These are the songs found in storage:"
-echo $songs
-read varname
+echo "Which one is the song of the neighbor? (showing files stored in the ./audio folder)"
+
+i=0
+while read line; do
+    options[ $i ]="$line"
+    (( i++ ))
+done < <(ls ./audio/*_oc.wav | sed "s@./audio/@@g")
+
+select opt in "${options[@]}"; do
+  case $opt in
+    *.wav)
+      echo "Wave file $opt selected"
+      varname=$opt
+      break
+      ;;
+    *)
+      echo "This is not a number"
+      ;;
+  esac
+done
+
 param="songB ="
 sed -i "s/$param.*/$param $varname/" $pfile
 sed -i "s/sound_typeB = .*/sound_typeB = alien/" $pfile
+printf "\n"
 
 # Finish
 while true; do
@@ -127,4 +173,6 @@ while true; do
 	* ) echo "Please answer yes (y) or no (n).";;
     esac
 done
-	
+
+# Archive parameter file
+rsync $pfile ../SingSparrow_data/parameters/$birdname\_parameters.txt
