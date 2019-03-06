@@ -24,7 +24,7 @@ if [ "$test" == "bird" ]; then
 	if [ "$elapsed" == "5" ]; then
 	    break
 	fi
-	aplay ./audio/red-jl-092_oc.wav
+	aplay /home/pi/SingSparrow/audio/red-jl-092_oc-L.wav
 	sleep 0.1
     done
 fi
