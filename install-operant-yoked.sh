@@ -19,7 +19,7 @@ done
 printf "\n"
 
 if [ "$cronup" == "1" ]; then
-    echo "00 08 * * * DISPLAY=:0 /home/pi/SingSparrow/singsparrow-operant-yoked.sh" > mycron
+    echo "00 08 * * * DISPLAY=:0 /home/pi/SingSparrow/singsparrow-operant-yoked.sh -r" > mycron
     echo "00 19 * * * /home/pi/SingSparrow/shutsparrow.sh /home/pi/SingSparrow/processes" >> mycron
     echo "*/15 08-19 * * * DISPLAY=:0 /home/pi/SingSparrow/resumetutoring.sh /home/pi/SingSparrow/processes" >> mycron
     echo "* */1 * * * /home/pi/SingSparrow/updatetime.sh" >> mycron
