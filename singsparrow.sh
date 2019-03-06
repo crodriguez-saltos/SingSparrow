@@ -94,17 +94,21 @@ if [ ! -d $datadir/output/$bird ]; then
     mkdir $datadir/output/$bird
 fi
 
-output="$datadir/output/$bird"
-output="$output/OutputFile.$(date +%Y)$(date +%b)$(date +%d)"
-output="$output"_"$room"
-output="$output"_"Id-$bird"
-output="$output"_"Model-$yokmatch"
-output="$output"_"$yoktype"
-output="$output"_"File1-$songA"
-output="$output"_"Type1-$songAtype"
-output="$output"_"File2-$songB"
-output="$output"_"Type2-$songBtype"
-output="$output"_"1.txt"
+if [ "$opyok" == "1" ]; then
+    nday=$(((($(date +%s) - $(date -d "$daystart" +%s)) / (24 * 3600)) + 1))
+    output="$datadir/output/$bird"
+    output="$output/OutputFile.$(date +%Y)$(date +%b)$(date +%d)"
+    output="$output"_"$room"
+    output="$output"_"Id-$bird"
+    output="$output"_"Model-$yokmatch"
+    output="$output"_"day-$nday"
+    output="$output"_"$yoktype"
+    output="$output"_"File1-$songA"
+    output="$output"_"Type1-$songAtype"
+    output="$output"_"File2-$songB"
+    output="$output"_"Type2-$songBtype"
+    output="$output"_"1.txt"
+fi
 
 echo "Output file is $output"
 
@@ -176,7 +180,6 @@ mkfifo pressbuff2
 
 # Generate schedule
 if [ "$opyok" == "1" ]; then
-	nday=$(((($(date +%s) - $(date -d "$daystart" +%s)) / (24 * 3600)) + 1))
 	echo "Today is day $nday of experiment."
 	
 	ndayf=$(printf "%03d" $nday)
