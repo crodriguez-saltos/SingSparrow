@@ -30,7 +30,7 @@ fi
 
 # Parameters.txt wizard
 while true; do
-    read -p "Do you want to enter info about the bird? (y/n)" yn
+    read -p "Do you want to enter info about the bird? (choosing yes will erase current configuration values) (y/n)" yn
     case $yn in
 	[Yy]* ) echo "Let's begin!"; break;;
 	[Nn]* ) echo "OK"; exit;;
