@@ -76,7 +76,12 @@ printf "This program was written by Carlos Antonio Rodriguez-Saltos, 2018\n\n"
 
 echo "Start hour is $(echo $whs | cat -v)"
 echo "End hour is $(echo $whe | cat -v)"
-echo "Reset status is $(echo $reset | cat -v)"
+
+if [ "$reset" == "1" ]; then
+	echo "Playlist position has been reset"
+else
+	echo "Playlist continues from last run"
+fi
 
 echo "Song A is $(echo $songA | cat -v)"
 echo "Song B is $(echo $songB | cat -v)"
