@@ -28,18 +28,9 @@ if [ "$cronup" == "1" ]; then
     rm mycron
 fi
 
-# Create data folders, if needed
-outputdir="../SingSparrow_data/output"
-if [ ! -d $outputdir ]; then
-    mkdir -p $outputdir
-fi
-
-# Copy parameters file
-rsync ./parameters_opyok.txt ../SingSparrow_data/parameters_opyok.txt
-
 # Parameters.txt wizard
 while true; do
-    read -p "Do you want to enter info about the bird? (y/n)" yn
+    read -p "Do you want to enter info about the bird? (choosing yes will erase current configuration values) (y/n)" yn
     case $yn in
 	[Yy]* ) echo "Let's begin!"; break;;
 	[Nn]* ) echo "OK"; exit;;
@@ -49,6 +40,15 @@ done
 printf "\n"
 
 pfile="../SingSparrow_data/parameters_opyok.txt"
+
+# Create data folders, if needed
+outputdir="../SingSparrow_data/output"
+if [ ! -d $outputdir ]; then
+    mkdir -p $outputdir
+fi
+
+# Copy parameters file
+rsync ./parameters_opyok.txt ../SingSparrow_data/parameters_opyok.txt
 
 # Name of the bird
 echo "What is the name of the bird?"
