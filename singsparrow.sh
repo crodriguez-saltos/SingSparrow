@@ -67,26 +67,26 @@ sox ./audio/$songB ./audio/$songBL remix 1 0
 sox ./audio/$songB ./audio/$songBR remix 0 1
 
 # Welcome message
-printf "Welcome to SingSparrow\n"
+printf "Welcome to SingSparrow\n" > welcome.txt
 if [ "$opyok" == "1" ]; then
-	printf "Running in operant-yoked mode\n"
+	printf "Running in operant-yoked mode\n" >> welcome.txt
 fi
 
-printf "This program was written by Carlos Antonio Rodriguez-Saltos, 2018\n\n"
+printf "This program was written by Carlos Antonio Rodriguez-Saltos, 2018\n\n" >> welcome.txt
 
-echo "Start hour is $(echo $whs | cat -v)"
-echo "End hour is $(echo $whe | cat -v)"
+echo "Start hour is $(echo $whs | cat -v)" >> welcome.txt
+echo "End hour is $(echo $whe | cat -v)" >> welcome.txt
 
 if [ "$reset" == "1" ]; then
-	echo "Playlist position has been reset"
+	echo "Playlist position has been reset" >> welcome.txt
 else
-	echo "Playlist continues from last run"
+	echo "Playlist continues from last run" >> welcome.txt
 fi
 
-echo "Song A is $(echo $songA | cat -v)"
-echo "Song B is $(echo $songB | cat -v)"
+echo "Song A is $(echo $songA | cat -v)" >> welcome.txt
+echo "Song B is $(echo $songB | cat -v)" >> welcome.txt
 
-echo "Working directory is $(pwd)"
+echo "Working directory is $(pwd)" >> welcome.txt
 
 # Define output file
 if [ "$system" == "rpi" ]; then
@@ -115,7 +115,7 @@ if [ "$opyok" == "1" ]; then
     output="$output"_"1.txt"
 fi
 
-echo "Output file is $output"
+echo "Output file is $output" >> welcome.txt
 
 # Reset schedule, as per user request
 date="$(date +%Y),$(date +%m),$(date +%d),$(date +%H),$(date +%M),$(date +%S)"
@@ -141,7 +141,7 @@ fi
 ## Check that the hour format is correct
 if [ "$(echo $whs | wc -m)" != "3" ] || [ "$(echo $whe | wc -m)" != "3" ]
 then
-    printf "Bad hour format. Check the leading zeros.\n"
+    printf "Bad hour format. Check the leading zeros.\n" >> welcome.txt
     exit 1
 fi
 
@@ -149,19 +149,19 @@ fi
 
 now=$(date +%H)
 
-printf "Hour is $now\n"
+printf "Hour is $now\n" >> welcome.txt
 
 if [ "$now" -ge "$whe" ] || [ "$now" -lt "$whs" ]; then
-    printf "Not in the working hour, time for a break!\n"
+    printf "Not in the working hour, time for a break!\n" >> welcome.txt
     exit
 else
-    printf "Starting program within working hours\n"
+    printf "Starting program within working hours\n" >> welcome.txt
 fi
 
 # Initialize key pressing module
 # An advantage of using SingSparrow operant-yoked mode is that the module for specifying the reinforcement schedule can be kept separate from that gathering the key presses. In this chunk of code, the key press module, which can be specified by the user, will start running as a parallel process.
 
-printf "Press module is $press_module\n"
+printf "Press module is $press_module\n" >> welcome.txt
 
 # To prevent former named pipes from interfering, they will be deleted.
 if [ -p pressbuff1 ]; then
@@ -177,7 +177,7 @@ if [ ! -f schpos ]; then
     echo "1" > schpos
 fi
 
-printf "Starting position in schedule is $(cat schpos)\n"
+printf "Starting position in schedule is $(cat schpos)\n" >> welcome.txt
 
 # Named pipes will be created to communicate across modules.
 mkfifo pressbuff1
@@ -185,15 +185,17 @@ mkfifo pressbuff2
 
 # Generate schedule
 if [ "$opyok" == "1" ]; then
-	echo "Today is day $nday of experiment."
+	echo "Today is day $nday of experiment." >> welcome.txt
 	
 	ndayf=$(printf "%03d" $nday)
 	schfile=$(find ./models -name "$yokmatch*day$ndayf*.txt")
-	echo "Match file is $schfile"
+	echo "Match file is $schfile" >> welcome.txt
 	cp $schfile schedulenum
 	tempsch=$(mktemp)
 	awk -F',' '{print $1}' schedulenum > tempsch && mv tempsch schedulenum
 fi
+
+cat welcome.txt
 
 if [ "$yoktype" == "forward" ]; then
 	sed -i "s/$songAtype/1/g" schedulenum
