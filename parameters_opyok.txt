@@ -18,8 +18,8 @@ sound_typeB = foster
 gapB = 3
 
 [Day schedule]
-Hour start = 08
-Hour end = 19
+Hour start = 09
+Hour end = 20
 Sound change = 15
 Begin file = 1
 reset = 1
