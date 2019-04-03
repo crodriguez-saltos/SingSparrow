@@ -1,0 +1,6 @@
+A acadian-flycatcher.wav
+B blue-jay.wav
+C carolina-wren.wav
+D dark-eyed-junco.wav
+E eastern-bluebird.wav
+F forsters-tern.wav
