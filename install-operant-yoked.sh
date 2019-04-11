@@ -24,7 +24,7 @@ if [ "$cronup" == "1" ]; then
     echo "*/15 09-20 * * * DISPLAY=:0 /home/pi/SingSparrow/resumetutoring.sh /home/pi/SingSparrow/processes" >> mycron
     echo "* */1 * * * /home/pi/SingSparrow/updatetime.sh" >> mycron
     echo "* 21 * * * reboot" >> mycron
-    echo "* 8 * * * /home/pi/SingSparrow/updatesparrow.sh /home/pi/SingSparrow"
+    echo "* 8 * * * /home/pi/SingSparrow/updatesparrow.sh /home/pi/SingSparrow" >> mycron
     crontab mycron
     rm mycron
 fi
