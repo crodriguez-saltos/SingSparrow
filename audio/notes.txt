@@ -3,6 +3,3 @@ yellow-cerulean_EBeq_oc:
 
 blue-cerulean_BBeq_oc:
 	Carlos Rodriguez: The two motifs occur consecutively in a recording of the bird. The length of the silence interval between the motifs was not altered. This length seemed typical, as suggested by measurements taken from a sample of ~4 pairs of motifs in the same recording. This audio file has been equalized using the BirdBrain equalizer (BBeq).
-
-pink-only_BBeq_oc:
-	Carlos Rodriguez: The two motifs occured consecutively in a recording of the bird. The silence intervals was not altered. This file has been equalized using the BirdBrain equalizer (BBeq).
