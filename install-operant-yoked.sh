@@ -29,58 +29,6 @@ if [ "$cronup" == "1" ]; then
     rm mycron
 fi
 
-# Backup installation wizard
-while true; do
-    read -p "Do you want to configure backups? (Not recommended if backup repo is already configured) (y/n)" yn
-    case $yn in
-	[Yy]* ) echo "Let's begin!"
-		bconf=1
-		break;;
-	[Nn]* ) echo "OK"
-		bconf=0
-		break;;
-	* ) echo "Please answer yes (y) or no (n).";;
-    esac
-done
-printf "\n"
-
-if [ "$bconf" == "1" ]; then
-    # Create data folders, if needed
-    outputdir="../SingSparrow_data/output"
-    if [ ! -d $outputdir ]; then
-	mkdir -p $outputdir
-    fi
-
-    echo "Please choose the repository name from the following list"
-
-#    repos=$(cat repo-list.txt)
-
-    i=0
-    while read line; do
-    options[ $i ]="$line"
-    (( i++ ))
-    done < <(cat repo-list.txt)
-
-    select opt in "${options[@]}"; do
-	case $opt in
-	    *)
-		echo "Repo $opt selected"
-		varname=$opt
-		break
-		;;
-	esac
-    done
-
-    repo=$varname
-
-    cd /home/pi/SingSparrow_data
-    git clone $repo
-    cd /home/pi/SingSparrow
-fi
-
-repo=$varname
-
-
 # Parameters.txt wizard
 while true; do
     read -p "Do you want to enter info about the bird? (choosing yes will erase current configuration values) (y/n)" yn
