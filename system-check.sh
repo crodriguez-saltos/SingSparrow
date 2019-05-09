@@ -23,11 +23,18 @@ if [ "$(echo $todayfile | wc -l)"  == "1" ]; then
 fi
 
 # When was the last time that each key was pressed?
-printf "This is the last record of key 1 being pressed:\n"
-cat * | grep "^1" | sort | tail -n 1
+printf "\nThe last time that key 1 was pressed was on:\n"
+cat * | grep "^1" | cut -d "," -f 3-9 | sort | tail -n 1
 
-printf "\nThis is the last record of key 2 being pressed:\n"
-cat * | grep "^2" | sort | tail -n 1
+printf "\nThe last time that key 2 was pressed was on:\n"
+cat * | grep "^2" | cut -d "," -f 3-9 | sort | tail -n 1
+
+# When was the last time that playbacks were made
+printf "\nThe last time that song 1 was played was on:\n"
+cat * | awk -F, '$2 == "1"' | cut -d "," -f 3-9 | sort | tail -n 1
+
+printf "\nThe last time that song 2 was played was on:\n"
+cat * | awk -F, '$2 == "2"' | cut -d "," -f 3-9 | sort | tail -n 1
 
 # How many playbacks have been made?
 printf "\nToday, song 1 has been played "

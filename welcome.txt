@@ -5,13 +5,13 @@ This program was written by Carlos Antonio Rodriguez-Saltos, 2018
 Start hour is 09
 End hour is 20
 Playlist continues from last run
-Song A is gray-green_EBeq_oc.wav
-Song B is yellow-cerulean_EBeq_oc.wav
+Song A is brown-red_oc.wav
+Song B is neighbor_oc.wav
 Working directory is /home/pi/SingSparrow
-Output file is /home/pi/SingSparrow_data/output/ZF1917/OutputFile.2019May09_B_Id-ZF1917_Model-ZF1536_day-36_reverse_File1-gray-green_EBeq_oc.wav_Type1-foster_File2-yellow-cerulean_EBeq_oc.wav_Type2-alien_1.txt
+Output file is /home/pi/SingSparrow_data/output/ZF1924/OutputFile.2019May09_C_Id-ZF1924_Model-ZF1541_day-29_reverse_File1-brown-red_oc.wav_Type1-foster_File2-neighbor_oc.wav_Type2-alien_1.txt
 Hour is 16
 Starting program within working hours
 Press module is ./gpio_press.sh
 Starting position in schedule is 2
-Today is day 36 of experiment.
-Match file is ./models/ZF1536_modelpb/ZF1536_day036_2016-3-2.txt
+Today is day 29 of experiment.
+Match file is ./models/ZF1541_modelpb/ZF1541_day029_2016-4-16.txt
