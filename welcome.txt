@@ -2,16 +2,16 @@ Welcome to SingSparrow
 Running in operant-yoked mode
 This program was written by Carlos Antonio Rodriguez-Saltos, 2018
 
-Start hour is 08
-End hour is 19
-Playlist continues from last run
-Song A is brown-red_oc.wav
-Song B is purple-gray_oc.wav
+Start hour is 09
+End hour is 20
+Playlist position has been reset
+Song A is pink-only_BBeq_oc.wav
+Song B is brown-red_oc.wav
 Working directory is /home/pi/SingSparrow
-Output file is /home/pi/SingSparrow_data/output/ZF1903/OutputFile.2019Apr02_D_Id-ZF1903_Model-ZF1542_day-41_reverse_File1-brown-red_oc.wav_Type1-foster_File2-purple-gray_oc.wav_Type2-alien_1.txt
-Hour is 08
+Output file is /home/pi/SingSparrow_data/output/ZF1940/OutputFile.2019May09_D_Id-ZF1940_Model-ZF1542_day-1_reverse_File1-pink-only_BBeq_oc.wav_Type1-foster_File2-brown-red_oc.wav_Type2-alien_1.txt
+Hour is 13
 Starting program within working hours
 Press module is ./gpio_press.sh
 Starting position in schedule is 1
-Today is day 41 of experiment.
-Match file is ./models/ZF1542_modelpb/ZF1542_day041_2016-4-28.txt
+Today is day 1 of experiment.
+Match file is ./models/ZF1542_modelpb/ZF1542_day001_2016-3-19.txt
